@@ -1,5 +1,7 @@
-import Board from "./components/board/board";
+import dynamic from "next/dynamic";
+
+const NoSSR = dynamic(() => import('./components/board/board'), { ssr: false });
 
 export default function Home() {
-  return <Board width={3}></Board>
+  return <NoSSR width={3}></NoSSR>;
 }
