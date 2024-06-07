@@ -1,8 +1,5 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Board from "./components/board/board";
 
 export default function Home() {
-  return <h1>
-    Hello, World!
-  </h1>
+  return <Board width={3}></Board>
 }

@@ -1,0 +1,10 @@
+.board-cell {
+    --cell-size: 8rem;
+    border: 0.2rem solid rgb(var(--foreground-rgb));
+    background: linear-gradient(to bottom,
+            transparent,
+            rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+    height: var(--cell-size);
+    aspect-ratio: 1;
+    font-size: xxx-large;
+}

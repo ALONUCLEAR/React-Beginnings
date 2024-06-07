@@ -1,0 +1,26 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}
+
+.board label {
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.board .winner {
+    color: goldenrod;
+}
+
+.board .draw {
+    opacity: 0.5;
+}
+
+.board .board-row {
+    display: flex;
+    width: fit-content;
+}
