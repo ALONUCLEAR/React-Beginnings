@@ -1,6 +1,8 @@
 .board {
+    --cell-size: 5rem;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
     height: 100dvh;
@@ -9,7 +11,6 @@
 .board label {
     font-size: large;
     font-weight: bold;
-    margin-bottom: 1rem;
 }
 
 .board .winner {
@@ -20,7 +21,23 @@
     opacity: 0.5;
 }
 
-.board .board-row {
+.board .rows .board-row {
     display: flex;
     width: fit-content;
+}
+
+.control-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn {
+    padding: 0.5em;
+    background-color: blue;
+    color: white;
+    /*btn colors remain regardless of the mode*/
+    border: none;
+    border-radius: 0.5rem;
 }

@@ -1,5 +1,4 @@
 .board-cell {
-    --cell-size: 8rem;
     border: 0.2rem solid rgb(var(--foreground-rgb));
     background: linear-gradient(to bottom,
             transparent,

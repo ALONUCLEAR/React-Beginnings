@@ -74,3 +74,33 @@ export const getWinner = (boardState: CellValue[][]): Turn | undefined => {
     ? "Game Over"
     : undefined;
 };
+
+const schemeDictionary: Record<string, string> = {
+  light: `
+  html {
+    color-scheme: light;
+    --foreground-rgb: 0, 0, 0 !important;
+    --background-start-rgb: 255, 255, 255 !important;
+    --background-end-rgb: 255, 255, 255 !important;
+  }`,
+  dark: `
+    color-scheme: dark;
+    --foreground-rgb: 255, 255, 255 !important;
+    --background-start-rgb: 0, 0, 0 !important;
+    --background-end-rgb: 0, 0, 0 !important;
+    `,
+};
+
+export const setSchemeStyle = (scheme: string) => {
+  const ID = "custom-scheme-style";
+  const existingStyle = document.getElementById(ID);
+  const style = existingStyle ?? document.createElement("style");
+  style.setAttribute("id", ID);
+  if (Object.keys(schemeDictionary).includes(scheme)) {
+    style.innerHTML = schemeDictionary[scheme];
+  }
+
+  if (!existingStyle) {
+    document.getElementsByTagName("head")[0].appendChild(style);
+  }
+};

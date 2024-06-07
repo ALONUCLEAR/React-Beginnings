@@ -2,8 +2,9 @@
 
 import { Key, useState } from 'react';
 import BoardCell, { BoardCellInput } from "./board-cell/board-cell";
+import Toggle from './board-cell/toggle/toggle';
 import './board.css';
-import { CellValue, Turn, fillRows, getWinner, swapTurns } from './board.utils';
+import { CellValue, Turn, fillRows, getWinner, setSchemeStyle, swapTurns } from './board.utils';
 
 type RowInput = {
     elementKey?: Key,
@@ -48,9 +49,15 @@ function BoardTopLabel(currentTurn: Turn, winner?: Turn): JSX.Element {
 
 export default function Board({ width, height }: BoardInput): JSX.Element {
     const rowCount = height ?? width;
-    const initRows = (value?: Turn) => fillRows(rowCount, width, value);
-    const [rowStates, setRows] = useState(initRows());
-    const [turn, SetTurn] = useState<Turn>('X');
+    const filledRows = (value?: Turn) => fillRows(rowCount, width, value);
+    const [rowStates, setRows] = useState(filledRows());
+    const initalTurn: Turn = 'X';
+    const [turn, setTurn] = useState<Turn>(initalTurn);
+
+    const initBoard = () => {
+        setRows(filledRows());
+        setTurn(initalTurn);
+    }
 
     const handleClick = (rowIndex: number) => {
         return (cellIndex: number) => {
@@ -76,20 +83,37 @@ export default function Board({ width, height }: BoardInput): JSX.Element {
             newRows[rowIndex][cellIndex] = turn;
 
 
-            SetTurn(swapTurns(turn))
+            setTurn(swapTurns(turn))
             setRows(newRows);
         }
     }
+
+    const controlRowStyle = {
+        width: `calc(var(--cell-size) * ${width})`
+    };
+
+    let prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const setDarkMode = (useDarkMode: boolean) => {
+        setSchemeStyle(useDarkMode ? "dark" : 'light');
+    }
+    const toggleWidth = '4rem';
 
     return <div className="board">
         {
             BoardTopLabel(turn, getWinner(rowStates))
         }
-        {
-            rowStates.map((cellValues, index) => {
-                const key = index + 1;
-                return <Row key={key} elementKey={key} cellValues={cellValues} onCellClicked={handleClick(index)}></Row>
-            })
-        }
-    </div>
+        <div className="control-row" style={controlRowStyle}>
+            <button className="btn reset-btn" onClick={initBoard}>Reset</button>
+            <Toggle toggleFunc={setDarkMode} defaultState={prefersDarkMode} text="Dark Mode" width={toggleWidth} />
+            <Toggle text="AI" width={toggleWidth} />
+        </div>
+        <div className="rows">
+            {
+                rowStates.map((cellValues, index) => {
+                    const key = index + 1;
+                    return <Row key={key} elementKey={key} cellValues={cellValues} onCellClicked={handleClick(index)}></Row>
+                })
+            }
+        </div>
+    </div >
 }

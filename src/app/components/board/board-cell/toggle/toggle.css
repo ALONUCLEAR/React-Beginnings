@@ -1,0 +1,59 @@
+.toggle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toggle {
+    min-width: 1rem;
+    min-height: 1rem;
+    background-color: gray;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.toggle.on {
+    background-color: blue;
+}
+
+:root {
+    --basic-thumb-margin: 0.1rem;
+}
+
+.toggle .thumb {
+    background-color: white;
+    border-radius: 50%;
+    width: 30%;
+    aspect-ratio: 1;
+    margin: var(--basic-thumb-margin);
+    transform: translateX(0);
+}
+
+.toggle.on .thumb {
+    animation: turn-on 20ms ease;
+    margin-left: auto;
+}
+
+.toggle.off .thumb {
+    animation: turn-off 20ms ease;
+}
+
+@keyframes turn-on {
+    from {
+        margin-left: var(--basic-thumb-margin);
+    }
+
+    to {
+        margin-left: 1rem;
+    }
+}
+
+@keyframes turn-off {
+    from {
+        margin-left: 1rem;
+    }
+
+    to {
+        margin-left: var(--basic-thumb-margin);
+    }
+}
