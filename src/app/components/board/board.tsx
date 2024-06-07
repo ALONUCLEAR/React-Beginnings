@@ -5,6 +5,7 @@ import BoardCell, { BoardCellInput } from "./board-cell/board-cell";
 import Toggle from './board-cell/toggle/toggle';
 import './board.css';
 import { CellValue, Turn, fillRows, getWinner, setSchemeStyle, swapTurns } from './board.utils';
+import { getNextMove } from './minimax.utils';
 
 type RowInput = {
     elementKey?: Key,
@@ -53,6 +54,7 @@ export default function Board({ width, height }: BoardInput): JSX.Element {
     const [rowStates, setRows] = useState(filledRows());
     const initalTurn: Turn = 'X';
     const [turn, setTurn] = useState<Turn>(initalTurn);
+    const [useAI, setUseAI] = useState(false);
 
     const initBoard = () => {
         setRows(filledRows());
@@ -82,9 +84,12 @@ export default function Board({ width, height }: BoardInput): JSX.Element {
 
             newRows[rowIndex][cellIndex] = turn;
 
-
-            setTurn(swapTurns(turn))
-            setRows(newRows);
+            if (useAI && !getWinner(newRows)) {
+                setRows(getNextMove(newRows));
+            } else {
+                setTurn(swapTurns(turn))
+                setRows(newRows);
+            }
         }
     }
 
@@ -98,6 +103,15 @@ export default function Board({ width, height }: BoardInput): JSX.Element {
     }
     const toggleWidth = '4rem';
 
+    const changeAIPreference = (state: boolean) => {
+        setUseAI(state);
+
+        if (state && turn === 'O') {
+            setRows(getNextMove(rowStates));
+            setTurn('X');
+        }
+    }
+
     return <div className="board">
         {
             BoardTopLabel(turn, getWinner(rowStates))
@@ -105,7 +119,7 @@ export default function Board({ width, height }: BoardInput): JSX.Element {
         <div className="control-row" style={controlRowStyle}>
             <button className="btn reset-btn" onClick={initBoard}>Reset</button>
             <Toggle toggleFunc={setDarkMode} defaultState={prefersDarkMode} text="Dark Mode" width={toggleWidth} />
-            <Toggle text="AI" width={toggleWidth} />
+            <Toggle toggleFunc={changeAIPreference} text="AI" width={toggleWidth} />
         </div>
         <div className="rows">
             {
